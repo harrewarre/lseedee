@@ -40,6 +40,11 @@ namespace LSeeDee
             _port.Write(rawData, 0, rawData.Length);
         }
 
+        public void Write(byte rawByte)
+        {
+            Write(new byte[] { rawByte });
+        }
+
         public void SendCommand(Command command)
         {
             Write(new byte[] { (byte)command });

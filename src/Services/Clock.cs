@@ -35,8 +35,8 @@ namespace LSeeDee
         private void WriteNow()
         {
             var now = DateTime.Now;
-            _display.WriteText(0, 0, now.ToString("yyyy-MM-dd"), false);
-            _display.WriteText(0, 15, now.ToString("HH:mm"), false);
+            _display.WriteText(0, 0, now.ToString("yyyy-MM-dd"));
+            _display.WriteText(0, 15, now.ToString("HH:mm"));
 
             _logger.LogInformation($"Tick {now}");
         }
