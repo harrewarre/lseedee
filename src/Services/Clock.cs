@@ -17,7 +17,7 @@ namespace LSeeDee
             _logger = logger;
 
             _display = display;
-            _timer = new Timer(10 * 1000);
+            _timer = new Timer(1000);
 
             _timer.Elapsed += (sender, args) =>
             {

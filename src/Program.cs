@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using LSeeDee.Options;
 using LSeeDee.Services;
@@ -22,6 +21,8 @@ namespace LSeeDee
                 var display = scope.ServiceProvider.GetService<Clock>();
             }
 
+            TrayIcon.Create();
+
             await host.WaitForShutdownAsync();
         }
 
@@ -31,7 +32,7 @@ namespace LSeeDee
                 .ConfigureAppConfiguration((context, configuration) =>
                 {
                     configuration.SetBasePath(Directory.GetCurrentDirectory());
-                    configuration.AddJsonFile("appSettings.json", optional: false, reloadOnChange: true);
+                    configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
                     Configuration = configuration.Build();
                 })
@@ -40,6 +41,7 @@ namespace LSeeDee
                     services.Configure<DisplayOptions>(Configuration.GetSection("Display"));
                     services.AddLogging();
 
+                    services.AddSingleton<DisplayPort>();
                     services.AddSingleton<Display>();
                     services.AddSingleton<Clock>();
                 });

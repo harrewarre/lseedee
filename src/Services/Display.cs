@@ -1,5 +1,3 @@
-using System.IO.Ports;
-using System.Text;
 using LSeeDee.Options;
 using LSeeDee.Types;
 using Microsoft.Extensions.Logging;
@@ -9,50 +7,31 @@ namespace LSeeDee.Services
 {
     public class Display
     {
-        private readonly DisplayOptions _displayOptions;
         private readonly ILogger<Display> _logger;
+        private readonly DisplayPort _port;
 
-        private readonly SerialPort _port;
-
-        public Display(IOptions<DisplayOptions> displayOptions, ILogger<Display> logger)
+        public Display(DisplayPort port, ILogger<Display> logger)
         {
-            _displayOptions = displayOptions.Value;
             _logger = logger;
+            _port = port;
 
-            if (string.IsNullOrWhiteSpace(_displayOptions.Port))
-            {
-                _logger.LogCritical("Display port value is required!");
-                return;
-            }
-
-            if (_displayOptions.Speed == 0)
-            {
-                _logger.LogCritical("Display speed is required!");
-                return;
-            }
-
-            _port = new SerialPort(_displayOptions.Port, _displayOptions.Speed);
-            _port.Open();
-
-            WriteCommand(Command.ClearDisplay);
-            WriteCommand(Command.HideCursor);
-
-            _logger.LogInformation($"Display ready on port {_displayOptions.Port} @ {_displayOptions.Speed} baud");
+            SendCommand(Command.ClearDisplay);
+            SendCommand(Command.HideCursor);
         }
 
         private void WriteToScreen(byte[] data)
         {
-            _port.Write(data, 0, data.Length);
+            _port.Write(data);
         }
 
-        private void WriteCommand(Command command)
+        private void SendCommand(Command command)
         {
-            WriteToScreen(new byte[] { (byte)command });
+            _port.SendCommand(command);
         }
 
         private void WriteByte(byte data)
         {
-            WriteToScreen(new byte[] { data });
+            _port.Write(new byte[] { data });
         }
 
         public void WriteText(int line, int col, string text, bool scrollLine)
@@ -79,7 +58,7 @@ namespace LSeeDee.Services
             }
 
             SetCursorPosition(line, col);
-            _port.Write(text);
+            _port.WriteText(text);
         }
 
         public void SetCursorPosition(int line, int col)
