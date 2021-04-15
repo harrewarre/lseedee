@@ -7,15 +7,11 @@ namespace LSeeDee
 {
     public class Clock
     {
-        private readonly ILogger<Clock> _logger;
-
         private readonly Display _display;
         private readonly Timer _timer;
 
-        public Clock(Display display, ILogger<Clock> logger)
+        public Clock(Display display)
         {
-            _logger = logger;
-
             _display = display;
             _timer = new Timer(1000);
 
@@ -28,17 +24,13 @@ namespace LSeeDee
             _timer.AutoReset = true;
 
             WriteNow();
-
-            _logger.LogInformation("Clock started!");
         }
 
         private void WriteNow()
         {
             var now = DateTime.Now;
             _display.WriteText(0, 0, now.ToString("yyyy-MM-dd"));
-            _display.WriteText(0, 15, now.ToString("HH:mm"));
-
-            _logger.LogInformation($"Tick {now}");
+            _display.WriteText(0, 12, now.ToString("HH:mm:ss"));
         }
     }
 }

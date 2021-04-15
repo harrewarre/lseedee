@@ -19,10 +19,10 @@ namespace LSeeDee
             using (var scope = host.Services.CreateScope())
             {
                 var clock = scope.ServiceProvider.GetService<Clock>();
-                var music = scope.ServiceProvider.GetService<SpotifyTicker>();
+                var drive = scope.ServiceProvider.GetService<DiskSpace>();
             }
 
-            TrayIcon.Create();
+            // TrayIcon.Create();
 
             await host.WaitForShutdownAsync();
         }
@@ -45,6 +45,7 @@ namespace LSeeDee
                     services.AddSingleton<DisplayPort>();
                     services.AddSingleton<Display>();
                     services.AddSingleton<Clock>();
+                    services.AddSingleton<DiskSpace>();
                     // services.AddSingleton<SpotifyTicker>();
                 });
         }

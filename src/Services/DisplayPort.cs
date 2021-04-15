@@ -3,6 +3,10 @@ using LSeeDee.Options;
 using LSeeDee.Types;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Collections.Concurrent;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace LSeeDee
 {
@@ -11,6 +15,8 @@ namespace LSeeDee
         private readonly DisplayOptions _displayOptions;
         private readonly ILogger<DisplayPort> _logger;
         private readonly SerialPort _port;
+
+        private readonly BlockingCollection<byte[]> _outputQueue = new BlockingCollection<byte[]>();
 
         public DisplayPort(IOptions<DisplayOptions> displayOptions, ILogger<DisplayPort> logger)
         {
@@ -33,11 +39,13 @@ namespace LSeeDee
             _port.Open();
 
             _logger.LogInformation($"DisplayPort ready on port {_displayOptions.Port} @ {_displayOptions.Speed} baud");
+
+            Task.Factory.StartNew(() => OutputProcessor(), TaskCreationOptions.LongRunning);
         }
 
         public void Write(byte[] rawData)
         {
-            _port.Write(rawData, 0, rawData.Length);
+            SendData(rawData);
         }
 
         public void Write(byte rawByte)
@@ -52,7 +60,25 @@ namespace LSeeDee
 
         public void WriteText(string text)
         {
-            _port.Write(text);
+            SendData(text);
+        }
+
+        private void SendData(string text)
+        {
+            _outputQueue.Add(Encoding.UTF8.GetBytes(text));
+        }
+
+        private void SendData(byte[] data)
+        {
+            _outputQueue.Add(data);
+        }
+
+        private void OutputProcessor()
+        {
+            while (_outputQueue.TryTake(out var data, Timeout.Infinite))
+            {
+                _port.Write(data, 0, data.Length);
+            }
         }
     }
 }
