@@ -21,6 +21,7 @@ namespace LSeeDee
                 var clock = scope.ServiceProvider.GetService<Clock>();
                 var drive = scope.ServiceProvider.GetService<DiskSpace>();
                 var cpuTime = scope.ServiceProvider.GetService<CpuTime>();
+                var ramUse = scope.ServiceProvider.GetService<RamUse>();
             }
 
             // TrayIcon.Create();
@@ -48,6 +49,7 @@ namespace LSeeDee
                     services.AddSingleton<Clock>();
                     services.AddSingleton<DiskSpace>();
                     services.AddSingleton<CpuTime>();
+                    services.AddSingleton<RamUse>();
                     // services.AddSingleton<SpotifyTicker>();
                 });
         }

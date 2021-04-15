@@ -14,7 +14,7 @@ namespace LSeeDee
             _display = display;
             _counter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
 
-            var timer = new Timer(500);
+            var timer = new Timer(1000);
 
             timer.Elapsed += (sender, args) =>
             {

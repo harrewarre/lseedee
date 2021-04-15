@@ -29,7 +29,7 @@ namespace LSeeDee
 
         private void WriteDriveInfo()
         {
-            _display.WriteText(2, 0, GetDriveInfo());
+            _display.WriteText(3, 0, GetDriveInfo());
         }
 
         private string GetDriveInfo()
