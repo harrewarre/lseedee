@@ -48,24 +48,9 @@ namespace LSeeDee
             SendData(rawData);
         }
 
-        public void Write(byte rawByte)
-        {
-            Write(new byte[] { rawByte });
-        }
-
         public void SendCommand(Command command)
         {
             Write(new byte[] { (byte)command });
-        }
-
-        public void WriteText(string text)
-        {
-            SendData(text);
-        }
-
-        private void SendData(string text)
-        {
-            _outputQueue.Add(Encoding.UTF8.GetBytes(text));
         }
 
         private void SendData(byte[] data)

@@ -24,7 +24,6 @@ namespace LSeeDee
                 if (currentTitle != title)
                 {
                     currentTitle = title;
-                    _display.WriteScrollingText(1, title);
                 }
             };
 

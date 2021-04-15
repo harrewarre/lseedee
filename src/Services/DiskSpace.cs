@@ -37,7 +37,7 @@ namespace LSeeDee
             var drive = DriveInfo.GetDrives().First();
             var percentUsed = Math.Abs((100 * (double)drive.AvailableFreeSpace / drive.TotalSize) - 100);
 
-            return $"C: {percentUsed:F02}% used";
+            return $"C:  : {percentUsed:F02}% used";
         }
     }
 
