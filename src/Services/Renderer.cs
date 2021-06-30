@@ -19,6 +19,8 @@ namespace LSeeDee.Services
             _screens = screens.ToList();
             _currentScreen = screens.First();
 
+            var bla = 1;
+
             _port = port;
         }
 
