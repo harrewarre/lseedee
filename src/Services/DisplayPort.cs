@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace LSeeDee
+namespace LSeeDee.Services
 {
     public class DisplayPort
     {

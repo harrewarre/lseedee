@@ -6,7 +6,7 @@ namespace LSeeDee.Types
         ClearScreen = 2,
         HideCursor = 4,
         ShowCursor = 6,
-        ClearDisplay = 12,
+        ClearDisplayAndEraseData = 12,
         SetCursorPosition = 17,
         SetHiddenCharacter = 21,
         ScrollText = 22,
