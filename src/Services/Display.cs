@@ -20,6 +20,8 @@ namespace LSeeDee.Services
             _port.SendCommand(Command.ClearDisplay);
             _port.SendCommand(Command.HideCursor);
             _port.SendCommand(Command.WrapOff);
+
+            var bla = 1;
         }
 
         public void WriteText(int line, int col, string text)
