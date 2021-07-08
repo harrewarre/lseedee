@@ -3,7 +3,6 @@ using System.Text;
 using LSeeDee.Options;
 using LSeeDee.Types;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace LSeeDee.Services
 {
@@ -17,7 +16,7 @@ namespace LSeeDee.Services
             _logger = logger;
             _port = port;
 
-            _port.SendCommand(Command.ClearDisplay);
+            _port.SendCommand(Command.ClearDisplayAndEraseData);
             _port.SendCommand(Command.HideCursor);
             _port.SendCommand(Command.WrapOff);
 
@@ -43,6 +42,11 @@ namespace LSeeDee.Services
                 .ToArray();
 
             _port.Write(data);
+        }
+
+        public void ClearScreen()
+        {
+            _port.SendCommand(Command.ClearDisplayAndEraseData);
         }
     }
 }

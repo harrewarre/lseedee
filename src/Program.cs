@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using LSeeDee.Options;
+using LSeeDee.Screens;
 using LSeeDee.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,13 +19,9 @@ namespace LSeeDee
 
             using (var scope = host.Services.CreateScope())
             {
-                var clock = scope.ServiceProvider.GetService<Clock>();
-                var drive = scope.ServiceProvider.GetService<DiskSpace>();
-                var cpuTime = scope.ServiceProvider.GetService<CpuTime>();
-                var ramUse = scope.ServiceProvider.GetService<RamUse>();
+                var renderer = scope.ServiceProvider.GetRequiredService<Renderer>();
+                renderer.Start();
             }
-
-            // TrayIcon.Create();
 
             await host.WaitForShutdownAsync();
         }
@@ -46,11 +43,12 @@ namespace LSeeDee
 
                     services.AddSingleton<DisplayPort>();
                     services.AddSingleton<Display>();
-                    services.AddSingleton<Clock>();
-                    services.AddSingleton<DiskSpace>();
-                    services.AddSingleton<CpuTime>();
-                    services.AddSingleton<RamUse>();
-                    // services.AddSingleton<SpotifyTicker>();
+
+                    services.AddSingleton<Renderer>();
+
+                    // services.AddSingleton<IScreen, HelloWorldScreen>();
+                    services.AddSingleton<IScreen, TimeScreen>();
+                    services.AddSingleton<IScreen, SpotifyScreen>();
                 });
         }
     }
